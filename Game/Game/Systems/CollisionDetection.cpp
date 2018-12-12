@@ -5,9 +5,14 @@ void CollisionDetection::addEntity(Entity en)
 	m_entityList.push_back(en);
 }
 
-void CollisionDetection::addSystem(HealthSystem sys)
+void CollisionDetection::addSystemH(HealthSystem sys)
 {
 	HealthSys = sys;
+}
+
+void CollisionDetection::addSystemS(ScoreSystem sys)
+{
+	ScoreSys = sys;
 }
 
 void CollisionDetection::update()
@@ -18,6 +23,7 @@ void CollisionDetection::update()
 void CollisionDetection::collisionResponseChaser(Entity chaser, Entity notChaser)
 {
 	HealthSys.updateHealth(notChaser);
+	ScoreSys.updateScore(notChaser);
 
 	for (Entity& i : m_entityList) {
 		for (Component* j : i.getComponents()) {
@@ -100,6 +106,9 @@ void CollisionDetection::setValues()
 				if (j->id == 4) {
 					chase3 = dynamic_cast<ChaseComponent*>(j);
 				}
+			//	if (j->id == 5) {
+				//	Score2 = dynamic_cast<ScoreComponent*>(j);
+			//	}
 			}
 		}
 	}

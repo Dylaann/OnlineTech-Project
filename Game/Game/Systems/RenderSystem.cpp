@@ -1,5 +1,5 @@
 #include "RenderSystem.h"
-
+#include <iostream>
 /// <summary>
 /// adds entity to list.
 /// </summary>
@@ -25,12 +25,35 @@ void RenderSystem::render(SDL_Renderer* renderer)
 			if (j->id == 4) {
 				m_color = dynamic_cast<ChaseComponent*>(j)->getColor();
 			}
+			if (j->id == 5) {
+				m_score = dynamic_cast<ScoreComponent*>(j)->getScore();
+			}
 		}
 		
 		SDL_SetRenderDrawColor(renderer, m_color.r, m_color.g, m_color.b, m_color.a);
-
+		if (TTF_Init() < 0)
+		{
+			//error
+			std::cout << "error error error" << std::endl;
+		}
 		int point_x;
 		int point_y;
+
+	/*	const char *path = "ASSETS\\arial.ttf";
+		TTF_Font* Sans = TTF_OpenFont(path, 50);
+		SDL_Color White = { 255, 255, 255 };
+
+		const char text = m_score;
+
+		surfaceMessage = TTF_RenderText_Solid(Sans, &text, White);
+
+		MessageText = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+		Message_rect.x = 100;
+		Message_rect.y = 100;
+		Message_rect.w = 200;
+		Message_rect.y = 200;
+
+		SDL_RenderCopy(renderer, MessageText, NULL, &Message_rect);*/
 
 		while (radius > 0)
 		{

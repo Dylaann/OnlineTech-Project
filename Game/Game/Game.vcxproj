@@ -87,7 +87,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SDL_SDK)\SDL2_IMAGE-2.0.3\lib\x86\;$(SDL_SDK)\lib\x86\;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2_ttf.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -140,6 +140,7 @@
     <ClCompile Include="Systems\HealthSystem.cpp" />
     <ClCompile Include="Systems\MovementSystem.cpp" />
     <ClCompile Include="Systems\RenderSystem.cpp" />
+    <ClCompile Include="Systems\ScoreSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\Components.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Systems\HealthSystem.h" />
     <ClInclude Include="Systems\MovementSystem.h" />
     <ClInclude Include="Systems\RenderSystem.h" />
+    <ClInclude Include="Systems\ScoreSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

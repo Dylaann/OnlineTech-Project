@@ -5,6 +5,7 @@
 #include <SDL_timer.h>
 #include <SDL_image.h>
 #include <stdlib.h>
+#include <SDL_ttf.h>
 #include <iostream>
 #include "Entities/Entities.h"
 #include "Components/Components.h"
@@ -12,6 +13,7 @@
 #include "Systems/HealthSystem.h"
 #include "Systems/RenderSystem.h"
 #include "Systems/CollisionDetection.h"
+#include "Systems/ScoreSystem.h"
 
 using namespace std;
 
@@ -32,7 +34,9 @@ private:
 	void initialiseComponents();
 	void initialiseSystems();
 	void setUpGame();
-
+	void setUpFont();
+	void doSomeFont();
+	void timerCount();
 
 	SDL_Window *m_window;
 	int m_windowWidth = 1920;
@@ -41,6 +45,7 @@ private:
 	SDL_Renderer *m_renderer;
 
 	bool m_exitGame;
+	int timerInt = 0;
 
 	Entity* m_player1;
 	Entity* m_player2;
@@ -53,11 +58,29 @@ private:
 	ChaseComponent* m_chaseComponent;
 	ChaseComponent* m_chaseComponent2;
 	ChaseComponent* m_chaseComponent3;
+	ScoreComponent* m_scoreComponent;
+	ScoreComponent* m_scoreComponent2;
 
 	HealthSystem m_healthSystem;
 	RenderSystem m_renderSystem;
+	ScoreSystem m_scoreSystem;
 	MovementSystem m_movementSystem;
 	CollisionDetection m_colDet;
+
+	SDL_Texture* Message;
+	SDL_Rect Message_rect;
+	SDL_Surface* surfaceMessage;
+	TTF_Font* Sans;
+
+	SDL_Texture* Message2;
+	SDL_Rect Message_rect2;
+	SDL_Surface* surfaceMessage2;
+	
+
+	SDL_Texture* timerT;
+	SDL_Rect timer_rect;
+	SDL_Surface* timerMessage;
+
 };
 
 

@@ -1,4 +1,5 @@
 #include "HealthSystem.h"
+#include <iostream>
 
 /// <summary>
 /// Adds entity to list
@@ -20,6 +21,7 @@ void HealthSystem::updateHealth(Entity en)
 				if (j->id == 1) {
 					int newHealth = dynamic_cast<HealthComponent*>(j)->getHealth() - m_damage;
 					dynamic_cast<HealthComponent*>(j)->setHealth(newHealth);
+					std::cout << "Health:" + newHealth << std::endl;
 				}
 			}
 		}
