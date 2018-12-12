@@ -1,7 +1,7 @@
 #include "Game.h"
 #include <time.h>
 #include <string>
-
+#include <sstream>
 Game::Game()
 {
 
@@ -103,6 +103,7 @@ void Game::update()
 	m_colDet.setValues();
 	m_scoreSystem.setValues();
 	timerCount();
+	doSomeFont();
 	
 }
 
@@ -259,9 +260,9 @@ void Game::setUpFont() {
 void Game::doSomeFont()
 {
 	SDL_Color White = { 255, 255, 255 };
-	std::string score1 = "Player1 Score:" + std::to_string(m_scoreSystem.getScores().at(0)->getScore());
-
-	surfaceMessage = TTF_RenderText_Solid(Sans, score1.c_str(), White);
+	std::stringstream score1;
+	 score1 << "Player1 Score:" << std::to_string(m_scoreSystem.getScores().at(0)->getScore());
+	surfaceMessage = TTF_RenderText_Solid(Sans, score1.str().c_str(), White);
 
 	std::cout << "Drawing Font" << std::endl;
 	Message = SDL_CreateTextureFromSurface(m_renderer, surfaceMessage);
@@ -270,17 +271,19 @@ void Game::doSomeFont()
 	Message_rect.w = 200;
 	Message_rect.h = 100;
 
-
-	std::string score2 = "Player2 Score:" + std::to_string(m_scoreSystem.getScores().at(0)->getScore());
-	surfaceMessage2 = TTF_RenderText_Solid(Sans, score2.c_str(), White);
+	
+	std::stringstream score2;
+	score2 << "Player2 Score:" << std::to_string(m_scoreSystem.getScores().at(0)->getScore());
+	surfaceMessage2 = TTF_RenderText_Solid(Sans, score2.str().c_str(), White);
 	Message2 = SDL_CreateTextureFromSurface(m_renderer, surfaceMessage2);
 	Message_rect2.x = 300;
 	Message_rect2.y = 20;
 	Message_rect2.w = 200;
 	Message_rect2.h = 100;
 
-	std::string timer = "Timer:" + timerInt;
-	timerMessage = TTF_RenderText_Solid(Sans, timer.c_str(), White);
+	std::stringstream timer;
+	timer << "Timer:" << timerInt;
+	timerMessage = TTF_RenderText_Solid(Sans, timer.str().c_str(), White);
 	timerT = SDL_CreateTextureFromSurface(m_renderer, timerMessage);
 	timer_rect.x = 1600;
 	timer_rect.y = 20;
