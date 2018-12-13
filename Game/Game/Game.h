@@ -40,8 +40,8 @@ private:
 
 
 	SDL_Window *m_window;
-	int m_windowWidth = 1920;
-	int m_windowHeight = 1080;
+	int m_windowWidth = 1280;
+	int m_windowHeight = 720;
 
 	SDL_Renderer *m_renderer;
 
@@ -86,6 +86,7 @@ private:
 
 	Uint32 old_time, current_time;
 	float ftime;
+	Client m_client;
 	
 };
 

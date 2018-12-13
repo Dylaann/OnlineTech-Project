@@ -2,7 +2,7 @@
 
 Client::Client()
 {
-	ipAddress = "149.153.106.163";			// IP Address of the server
+	ipAddress = "149.153.106.146";			// IP Address of the server
 	port = 54000;						// Listening port # on the server
 
 										// Initialize WinSock
@@ -22,12 +22,14 @@ Client::Client()
 		WSACleanup();
 		return;
 	}
+	u_long iMode = 1;
+	int r = ioctlsocket(sock, FIONBIO, &iMode);
 
 	// Fill in a hint structure
 	hint.sin_family = AF_INET;
 	hint.sin_port = htons(port);
 	inet_pton(AF_INET, ipAddress.c_str(), &hint.sin_addr);
-
+	int connR = connect(sock, (sockaddr*)&hint, sizeof(hint));
 }
 
 Client::~Client()
@@ -37,7 +39,7 @@ Client::~Client()
 
 void Client::init()
 {
-	ipAddress = "149.153.106.145";			// IP Address of the server
+	ipAddress = "149.153.106.146";			// IP Address of the server
 	port = 8000;						// Listening port # on the server
 
 										// Initialize WinSock
@@ -89,10 +91,10 @@ std::string Client::receive()
 	if (bytesReceived > 0)
 	{
 		// Echo response to console
-		if (buf == "Welcome to the Awesome Chat Server Player 1!")
-		{
+		//if (buf == "Welcome to the Awesome Chat Server Player 1!")
+		//{
 			std::cout << "SERVER> " << std::string(buf, 0, bytesReceived) << std::endl;
-		}
+		//}
 		return buf;
 	}
 	return "";

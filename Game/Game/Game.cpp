@@ -112,7 +112,8 @@ void Game::update()
 	m_colDet.update();
 	m_colDet.setValues();
 	m_scoreSystem.setValues();
-	
+	m_client.receive();
+	m_client.sendMsg(std::string());
 	timerCount();
 	doSomeFont();
 	
