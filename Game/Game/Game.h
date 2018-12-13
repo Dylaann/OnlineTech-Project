@@ -17,6 +17,7 @@
 
 using namespace std;
 
+
 class Game {
 
 public:
@@ -37,6 +38,7 @@ private:
 	void setUpFont();
 	void doSomeFont();
 	void timerCount();
+	
 
 	SDL_Window *m_window;
 	int m_windowWidth = 1920;
@@ -80,6 +82,10 @@ private:
 	SDL_Texture* timerT;
 	SDL_Rect timer_rect;
 	SDL_Surface* timerMessage;
+
+	Uint32 old_time, current_time;
+	float ftime;
+	
 
 };
 
