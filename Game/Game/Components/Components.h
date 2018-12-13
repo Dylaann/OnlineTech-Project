@@ -87,6 +87,25 @@ private:
 
 };
 
+
+
+
+
+/// <summary>
+/// Score Component.
+/// </summary>
+
+class ScoreComponent : public Component {
+public:
+	ScoreComponent() : m_score(0) { id = 5; };
+
+	int getScore() { return m_score; };
+	void setScore(int score) { m_score = score; };
+
+private:
+	int m_score = 0;
+};
+
 #endif // !COMPONENTS_H
 
 

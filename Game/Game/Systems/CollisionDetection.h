@@ -3,6 +3,7 @@
 
 #include "../Entities/Entities.h"
 #include "HealthSystem.h"
+#include "ScoreSystem.h"
 #include <iostream>
 
 /// <summary>
@@ -11,12 +12,11 @@
 class CollisionDetection {
 public:
 	void addEntity(Entity en);
-	void addSystem(HealthSystem sys);
+	void addSystemH(HealthSystem sys);
+	void addSystemS(ScoreSystem sys);
 	void update();
 	void collisionResponseChaser(Entity chaser, Entity notChaser);
-	void collisionResponsePlayers(Entity p1, Entity p2);
 	void setValues();
-
 private:
 	vector<Entity> m_entityList;
 	PositionComponent* p;
@@ -32,7 +32,9 @@ private:
 	ControlComponent* control2;
 
 	HealthSystem HealthSys;
+	ScoreSystem ScoreSys;
 
+	int timer = 0;
 
 	int x1 = 0;
 	int y1 = 0;
@@ -50,10 +52,7 @@ private:
 	int radii = 0;
 
 	bool p1p2();
-	bool p1p3();
-	bool p2p3();
 
-	void playerChecks();
 	void chaserChecks();
 };
 

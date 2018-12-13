@@ -48,8 +48,13 @@
     <ClCompile Include="Systems\CollisionDetection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Client\Client.cpp">
       <Filter>Source Files\Client</Filter>
+=======
+    <ClCompile Include="Systems\ScoreSystem.cpp">
+      <Filter>Source Files</Filter>
+>>>>>>> 14d23e59a4d783bc43be5834586cc5398ae89f67
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,8 +79,13 @@
     <ClInclude Include="Systems\CollisionDetection.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Client\Client.h">
       <Filter>Header Files\Client</Filter>
+=======
+    <ClInclude Include="Systems\ScoreSystem.h">
+      <Filter>Header Files\Systems</Filter>
+>>>>>>> 14d23e59a4d783bc43be5834586cc5398ae89f67
     </ClInclude>
   </ItemGroup>
 </Project>
