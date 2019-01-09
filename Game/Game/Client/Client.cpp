@@ -50,6 +50,7 @@ void Client::Send(std::string userInput)
 	{
 		// Send the text
 		int sendResult = send(sock, userInput.c_str(), userInput.size() + 1, 0);
+
 	}
 }
 

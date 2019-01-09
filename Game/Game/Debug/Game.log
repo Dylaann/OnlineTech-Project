@@ -1,2 +1,27 @@
-﻿  Client.cpp
+﻿  Game.cpp
+c:\users\dylmr\documents\onlinetech-project\game\game\game.cpp(8): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\dylmr\documents\onlinetech-project\game\game\game.cpp(365): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\dylmr\documents\onlinetech-project\game\game\game.cpp(366): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\dylmr\documents\onlinetech-project\game\game\game.cpp(368): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\dylmr\documents\onlinetech-project\game\game\game.cpp(369): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\utility(201): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  c:\users\dylmr\documents\onlinetech-project\game\game\game.cpp(178): note: see reference to function template instantiation 'std::pair<float,float>::pair<int,int,0>(_Other1 &&,_Other2 &&) noexcept' being compiled
+          with
+          [
+              _Other1=int,
+              _Other2=int
+          ]
+  c:\users\dylmr\documents\onlinetech-project\game\game\game.cpp(178): note: see reference to function template instantiation 'std::pair<float,float>::pair<int,int,0>(_Other1 &&,_Other2 &&) noexcept' being compiled
+          with
+          [
+              _Other1=int,
+              _Other2=int
+          ]
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\utility(202): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\utility(234): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  c:\users\dylmr\documents\onlinetech-project\game\game\game.cpp(384): note: see reference to function template instantiation 'std::pair<float,float>::pair<int,int,0>(std::pair<int,int> &&) noexcept' being compiled
+  c:\users\dylmr\documents\onlinetech-project\game\game\game.cpp(384): note: see reference to function template instantiation 'std::pair<float,float>::pair<int,int,0>(std::pair<int,int> &&) noexcept' being compiled
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\utility(235): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  Main.cpp
+  Generating Code...
   Game.vcxproj -> C:\Users\dylmr\Documents\OnlineTech-Project\Game\Debug\Game.exe

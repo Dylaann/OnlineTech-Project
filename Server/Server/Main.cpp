@@ -30,10 +30,10 @@ void main()
 
 	// Bind the ip address and port to a socket
 	sockaddr_in hint;
+	std::string ipAddr = "149.153.106.145";
 	hint.sin_family = AF_INET;
 	hint.sin_port = htons(8080);
 	hint.sin_addr.S_un.S_addr = INADDR_ANY; // Could also use inet_pton .... 
-
 	bind(listening, (sockaddr*)&hint, sizeof(hint));
 
 	// Tell Winsock the socket is for listening 
