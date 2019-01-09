@@ -2,9 +2,9 @@
 #include <time.h>
 #include <string>
 #include <sstream>
+
 Game::Game()
 {
-
 	srand(time(NULL));
 	m_window = SDL_CreateWindow("Online Technologies", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_windowWidth, m_windowHeight, SDL_WINDOW_OPENGL);
 	m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -21,13 +21,6 @@ Game::Game()
 	}
 
 
-	if (TTF_Init() < 0)
-	{
-		//error
-		std::cout << "error error error" << std::endl;
-	}
-	const char *path = "ASSETS\\arial.ttf";
-	
 	
 	initialiseEntitys();
 	initialiseComponents();
@@ -36,6 +29,8 @@ Game::Game()
 	setUpFont();
 	m_scoreSystem.setValues();
 	m_colDet.setValues();
+
+	initClient();
 }
 
 Game::~Game()
@@ -65,10 +60,17 @@ void Game::run()
 		old_time = current_time;
 		current_time = SDL_GetTicks();
 		ftime += (current_time - old_time) / 1000.0f;
-	
 		
 		update();
 		render();
+
+		SDL_FreeSurface(surfaceMessage);
+		SDL_FreeSurface(surfaceMessage2);
+		SDL_FreeSurface(timerMessage);
+
+		SDL_DestroyTexture(Message);
+		SDL_DestroyTexture(Message2);
+		SDL_DestroyTexture(timerT);
 
 		if ((SDL_GetTicks() - frameTime) < minimumFrameTime)
 			SDL_Delay(minimumFrameTime - (SDL_GetTicks() - frameTime));
@@ -102,20 +104,39 @@ void Game::processEvents()
 
 void Game::update()
 {
-	
-	//setUpFont();
-	m_movementSystem.update();
+	MessageResponse(m_client.processMessage(m_client.Receive()));
 
-	cout << m_healthComponent->getHealth() << endl;
-	//m_scoreSystem.updateScore(*m_player1);
-	//m_scoreSystem.updateScore(*m_player2);
-	m_colDet.update();
-	m_colDet.setValues();
-	m_scoreSystem.setValues();
-	
-	timerCount();
-	doSomeFont();
-	
+	if (m_player1->m_connected && m_player2->m_connected) {
+
+		m_movementSystem.update();
+		m_colDet.update();
+		m_colDet.setValues();
+		m_scoreSystem.setValues();
+
+		timerCount();
+		doSomeFont();
+
+		if (m_player1->getLocal()) {
+			PositionComponent* p = nullptr;
+
+			for (Component* j : m_player1->getComponents()) {
+				if (j->id == 2) {
+					p = dynamic_cast<PositionComponent*>(j);
+				}
+			}
+			m_client.Send(p->getPosStr());
+		}
+		else if (m_player2->getLocal()) {
+			PositionComponent* p = nullptr;
+
+			for (Component* j : m_player2->getComponents()) {
+				if (j->id == 2) {
+					p = dynamic_cast<PositionComponent*>(j);
+				}
+			}
+			m_client.Send(p->getPosStr());
+		}
+	}
 }
 
 void Game::render()
@@ -126,19 +147,17 @@ void Game::render()
 		SDL_Log("Could not create a renderer: %s", SDL_GetError());
 	}
 
-	
-
 	SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
 
 	SDL_RenderClear(m_renderer);
 
 	m_renderSystem.render(m_renderer);
+
 	SDL_RenderCopy(m_renderer, Message, NULL, &Message_rect);
 	SDL_RenderCopy(m_renderer, Message2, NULL, &Message_rect2);
 	SDL_RenderCopy(m_renderer, timerT, NULL, &timer_rect);
-	SDL_RenderPresent(m_renderer);
-	
 
+	SDL_RenderPresent(m_renderer);
 }
 
 /// <summary>
@@ -189,8 +208,8 @@ void Game::initialiseSystems()
 	m_healthSystem.addEntity(*m_player1);
 	m_healthSystem.addEntity(*m_player2);
 
-	m_movementSystem.addEntity(*m_player1);
-	m_movementSystem.addEntity(*m_player2);
+	m_movementSystem.addEntity(m_player1);
+	m_movementSystem.addEntity(m_player2);
 
 	m_scoreSystem.addEntity(*m_player1);
 	m_scoreSystem.addEntity(*m_player2);
@@ -261,14 +280,10 @@ void Game::setUpFont() {
 
 	if (TTF_Init() < 0)
 	{
-		//error
 		std::cout << "error error error" << std::endl;
 	}
 	const char *path = "ASSETS\\arial.ttf";
 	Sans = TTF_OpenFont(path, 50);
-	
-	doSomeFont();
-
 }
 
 void Game::doSomeFont()
@@ -283,7 +298,6 @@ void Game::doSomeFont()
 	Message_rect.y = 20;
 	Message_rect.w = 200;
 	Message_rect.h = 100;
-
 	
 	
 	std::stringstream score2;
@@ -296,30 +310,90 @@ void Game::doSomeFont()
 	Message_rect2.h = 100;
 
 	std::stringstream timer;
-	timer << "Timer:" << ftime;
+	timer << "Timer: " << static_cast<int>(ftime);
 	timerMessage = TTF_RenderText_Solid(Sans, timer.str().c_str(), White);
 	timerT = SDL_CreateTextureFromSurface(m_renderer, timerMessage);
 	timer_rect.x = 1600;
 	timer_rect.y = 20;
 	timer_rect.w = 200;
 	timer_rect.h = 100;
+
 }
 
 void Game::timerCount() {
 
-	for (int i= 0; i <= 15; i++)
+	if (ftime > 15)
 	{
-	///	std::cout << timerInt << std::endl;
-		if (timerInt == 15)
-		{
-			
-			timerInt = 0;
-		}
-		//timerInt += ftime;
+		ftime = 0;
 	}
+}
 
+void Game::initClient()
+{
+	if (m_client.init()) {
+		if (!m_player1->m_connected && !m_player2->m_connected) {
+			m_player1->m_connected = true;
+		}
+		else if (m_player1->m_connected && !m_player2->m_connected) {
+			m_player2->m_connected = true;
+		}
+		else {
+			std::cout << "Game Full" << std::endl;
+		}
+	}
+}
 
+void Game::MessageResponse(std::map<std::string, int> parsedMessage)
+{
+	for (auto const& pair : parsedMessage) {
 
+		PositionComponent* p1 = nullptr;
+		PositionComponent* p2 = nullptr;
 
+		for (Component* j : m_player1->getComponents()) {
+			if (j->id == 2) {
+				p1 = dynamic_cast<PositionComponent*>(j);
+			}
+		}
 
+		for (Component* j : m_player2->getComponents()) {
+			if (j->id == 2) {
+				p2 = dynamic_cast<PositionComponent*>(j);
+			}
+		}
+
+		int x = std::get<0>(p1->getPos());
+		int y = std::get<1>(p1->getPos());
+
+		int x2 = std::get<0>(p2->getPos());
+		int y2 = std::get<1>(p2->getPos());
+
+		auto key = pair.first;
+		auto value = pair.second;
+
+		if (key == "FIRST") {
+			m_player1->setLocal(true);
+			m_player1->m_connected = true;
+		}
+		else if (key == "JOINED") {
+			m_player2->setLocal(true);
+			m_player2->m_connected = true;
+		}
+		else if (key == "X") {
+			if (m_player1->getLocal()) {
+				p2->setPos(std::make_pair(value, y2));
+			}
+			else if (m_player2->getLocal()) {
+				p1->setPos(std::make_pair(value, y));
+			}
+		}
+		else if (key == "Y") {
+			if (m_player1->getLocal()) {
+				p2->setPos(std::make_pair(x2, value));
+			}
+			else if (m_player2->getLocal()) {
+				p1->setPos(std::make_pair(x, value));
+			}
+		}
+	}
 }

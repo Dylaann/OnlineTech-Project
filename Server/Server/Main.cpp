@@ -31,7 +31,7 @@ void main()
 	// Bind the ip address and port to a socket
 	sockaddr_in hint;
 	hint.sin_family = AF_INET;
-	hint.sin_port = htons(8000);
+	hint.sin_port = htons(8080);
 	hint.sin_addr.S_un.S_addr = INADDR_ANY; // Could also use inet_pton .... 
 
 	bind(listening, (sockaddr*)&hint, sizeof(hint));
@@ -75,7 +75,28 @@ void main()
 
 				// Send a welcome message to the connected client
 				string welcomeMsg = "Welcome to the Game!\r\n";
-				send(client, welcomeMsg.c_str(), welcomeMsg.size() + 1, 0);
+
+				if (master.fd_count <= 2) {
+					welcomeMsg = "FIRST: 0";
+					send(client, welcomeMsg.c_str(), welcomeMsg.size() + 1, 0);
+				}
+				else
+				{
+					welcomeMsg = "JOINED: 0";
+					send(client, welcomeMsg.c_str(), welcomeMsg.size() + 1, 0);
+
+					for (int i = 0; i < master.fd_count; i++)
+					{
+						SOCKET outSock = master.fd_array[i];
+						if (outSock != listening && outSock != sock)
+						{
+							send(outSock, welcomeMsg.c_str(), welcomeMsg.size() + 1, 0);
+						}
+
+					}
+				}
+
+				
 			}
 			else // It's an inbound message
 			{
@@ -115,7 +136,7 @@ void main()
 						if (outSock != listening && outSock != sock)
 						{
 							ostringstream ss;
-							ss << "SOCKET #" << sock << ": " << buf << "\r\n";
+							ss << "SOCKET: " << sock << "," << buf << "\r\n";
 							string strOut = ss.str();
 
 							send(outSock, strOut.c_str(), strOut.size() + 1, 0);

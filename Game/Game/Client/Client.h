@@ -1,9 +1,10 @@
 #ifndef CLIENT
 #define CLIENT
 
-#include <iostream>
-#include <string>
 #include <WS2tcpip.h>
+#include <vector>
+#include <map>
+
 
 using namespace std;
 
@@ -11,24 +12,19 @@ class Client {
 public:
 	Client();
 	~Client();
-	void init();
-	bool run();
-	std::string receive();
-	void sendMsg(std::string msg);
+
+	bool init();
+
+	void Send(std::string userInput);
+	vector<std::string> Receive();
+	map<std::string, int> processMessage(std::vector<std::string> items);
+
 	void close();
-	int getSock();
 
 private:
-	std::string ipAddress;
-	int port;
-	WSAData data;
-	WORD ver;
-	int wsResult;
 	SOCKET sock;
-	sockaddr_in hint;
-	int connResult;
+	int m_id = 0;
 	char buf[4096];
-	std::string userInput;
 };
 
 #endif // !CLIENT

@@ -6,7 +6,6 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <stdlib.h>
-#include <iostream>
 #include "Entities/Entities.h"
 #include "Components/Components.h"
 #include "Systems/MovementSystem.h"
@@ -25,7 +24,12 @@ public:
 
 	void run();
 
+	void initClient();
+
 private:
+
+	Client m_client;
+	void MessageResponse(std::map<std::string, int> parsedMessage);
 
 	void processEvents();
 	void update();
@@ -54,11 +58,9 @@ private:
 	HealthComponent* m_healthComponent;
 	ControlComponent* m_controlComponent;
 	ControlComponent* m_controlComponent2;
-	ControlComponent* m_controlComponent3;
 	PositionComponent* m_positionComponent;
 	ChaseComponent* m_chaseComponent;
 	ChaseComponent* m_chaseComponent2;
-	ChaseComponent* m_chaseComponent3;
 	ScoreComponent* m_scoreComponent;
 	ScoreComponent* m_scoreComponent2;
 
@@ -85,8 +87,9 @@ private:
 
 
 	Uint32 old_time, current_time;
-	float ftime;
+	double ftime;
 	
+	bool gameSet = false;
 };
 
 

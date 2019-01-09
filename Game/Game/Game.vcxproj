@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client\Client.h" />
+    <ClInclude Include="Client\parseUtils.h" />
     <ClInclude Include="Components\Components.h" />
     <ClInclude Include="Entities\Entities.h" />
     <ClInclude Include="Game.h" />

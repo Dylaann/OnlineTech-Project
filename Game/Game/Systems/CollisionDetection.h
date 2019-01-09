@@ -22,11 +22,9 @@ private:
 	PositionComponent* p;
 	ChaseComponent* chase1;
 	ChaseComponent* chase2;
-	ChaseComponent* chase3;
 
 	HealthComponent* Health1;
 	HealthComponent* Health2;
-	HealthComponent* Health3;
 
 	ControlComponent* control1;
 	ControlComponent* control2;
@@ -41,9 +39,6 @@ private:
 
 	int x2 = 0;
 	int y2 = 0;
-
-	int x3 = 0;
-	int y3 = 0;
 
 	int radius = 0;
 

@@ -2,6 +2,7 @@
 #define COMPONENTS_H
 
 #include <utility>
+#include <string>
 
 /// <summary>
 /// Component Interface
@@ -38,6 +39,10 @@ public:
 	std::pair<float, float> getPos() { return m_position; };
 	void setPos(std::pair<float, float> pos) { m_position = pos; };
 	void resetPos() { m_position = m_start; }
+
+	std::string getPosStr() {
+		return std::string("X: " + std::to_string(m_position.first) + "," + "Y: " + std::to_string(m_position.second));
+	}
 
 private:
 	std::pair<float, float> m_position;

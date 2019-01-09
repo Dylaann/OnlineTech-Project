@@ -26,13 +26,18 @@ public:
 	vector<Component*> getComponents() { return m_components; }
 
 	int getRadius() { return m_radius; }
+	int getLocal() { return m_local; }
+	void setLocal(bool set) { m_local = set; }
+
+	bool m_connected = false;
+
 private:
 	vector<Component*> m_components;
 
 protected:
 	int m_radius = 40;
 	int m_speed = 10;
-	
+	bool m_local;
 
 };
 

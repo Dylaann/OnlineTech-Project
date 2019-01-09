@@ -1,15 +1,15 @@
 #include "MovementSystem.h"
-
-void MovementSystem::addEntity(Entity en)
+#include <iostream>
+void MovementSystem::addEntity(Entity* en)
 {
 	m_entityList.push_back(en);
 }
 
 void MovementSystem::control(SDL_Keycode in)
 {
-	for (Entity& i : m_entityList) {
-		if (i.id == 1) {
-			for (Component* j : i.getComponents()) {
+	for (Entity *i : m_entityList) {
+		if (i->getLocal()) {
+			for (Component* j : i->getComponents()) {
 				if (j->id == 3) {
 					c = dynamic_cast<ControlComponent*>(j);
 					switch (in) {
@@ -37,9 +37,9 @@ void MovementSystem::control(SDL_Keycode in)
 
 void MovementSystem::update()
 {
-	for (Entity& i : m_entityList) {
+	for (Entity* i : m_entityList) {
 
-		for (Component* j : i.getComponents()) {
+		for (Component* j : i->getComponents()) {
 			if (j->id == 2) {
 
 				p = dynamic_cast<PositionComponent*>(j);

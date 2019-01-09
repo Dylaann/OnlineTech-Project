@@ -1,4 +1,5 @@
 ﻿  Main.cpp
 c:\users\dylmr\documents\onlinetech-project\server\server\main.cpp(11): warning C4326: return type of 'main' should be 'int' instead of 'void'
-c:\users\dylmr\documents\onlinetech-project\server\server\main.cpp(112): warning C4018: '<': signed/unsigned mismatch
+c:\users\dylmr\documents\onlinetech-project\server\server\main.cpp(88): warning C4018: '<': signed/unsigned mismatch
+c:\users\dylmr\documents\onlinetech-project\server\server\main.cpp(133): warning C4018: '<': signed/unsigned mismatch
   Server.vcxproj -> C:\Users\dylmr\Documents\OnlineTech-Project\Server\Debug\Server.exe

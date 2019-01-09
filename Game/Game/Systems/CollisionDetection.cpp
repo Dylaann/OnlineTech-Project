@@ -41,10 +41,7 @@ void CollisionDetection::collisionResponseChaser(Entity chaser, Entity notChaser
 		chase2->setChaser(false);
 		chase2->setColor(SDL_Color{ 0,0,255,255 });
 	}
-	else if (chaser.id == 3) {
-		chase3->setChaser(false);
-		chase3->setColor(SDL_Color{ 0,0,255,255 });
-	}
+
 
 	if (notChaser.id == 1) {
 		chase1->setChaser(true);
@@ -53,10 +50,6 @@ void CollisionDetection::collisionResponseChaser(Entity chaser, Entity notChaser
 	else if (notChaser.id == 2) {
 		chase2->setChaser(true);
 		chase2->setColor(SDL_Color{ 255,0,0,255 });
-	}
-	else if (notChaser.id == 3) {
-		chase3->setChaser(true);
-		chase3->setColor(SDL_Color{ 255,0,0,255 });
 	}
 }
 
@@ -91,24 +84,6 @@ void CollisionDetection::setValues()
 				if (j->id == 4) {
 					chase2 = dynamic_cast<ChaseComponent*>(j);
 				}
-			}
-		}
-		if (i.id == 3) {
-			for (Component* j : i.getComponents()) {
-				if (j->id == 1) {
-					Health3 = dynamic_cast<HealthComponent*>(j);
-				}
-				if (j->id == 2) {
-					x3 = std::get<0>(dynamic_cast<PositionComponent*>(j)->getPos());
-					y3 = std::get<1>(dynamic_cast<PositionComponent*>(j)->getPos());
-					radius = i.getRadius();
-				}
-				if (j->id == 4) {
-					chase3 = dynamic_cast<ChaseComponent*>(j);
-				}
-			//	if (j->id == 5) {
-				//	Score2 = dynamic_cast<ScoreComponent*>(j);
-			//	}
 			}
 		}
 	}

@@ -1,106 +1,68 @@
 #include "Client.h"
+#include "parseUtils.h"
+#include <iostream>
 
 Client::Client()
 {
-	ipAddress = "149.153.106.163";			// IP Address of the server
-	port = 54000;						// Listening port # on the server
-
-										// Initialize WinSock
-	ver = MAKEWORD(2, 2);
-	wsResult = WSAStartup(ver, &data);
-	if (wsResult != 0)
-	{
-		std::cerr << "Can't start Winsock, Err #" << wsResult << std::endl;
-		return;
-	}
-
-	// Create socket
-	sock = socket(AF_INET, SOCK_STREAM, 0);
-	if (sock == INVALID_SOCKET)
-	{
-		std::cerr << "Can't create socket, Err #" << WSAGetLastError() << std::endl;
-		WSACleanup();
-		return;
-	}
-
-	// Fill in a hint structure
-	hint.sin_family = AF_INET;
-	hint.sin_port = htons(port);
-	inet_pton(AF_INET, ipAddress.c_str(), &hint.sin_addr);
-
 }
 
 Client::~Client()
 {
-
 }
 
-void Client::init()
+bool Client::init()
 {
-	ipAddress = "149.153.106.145";			// IP Address of the server
-	port = 8000;						// Listening port # on the server
+	std::string ipAddress = "149.153.106.145";			// IP Address of the server
+	int port = 8080;
 
-										// Initialize WinSock
-	ver = MAKEWORD(2, 2);
-	wsResult = WSAStartup(ver, &data);
-	if (wsResult != 0)
-	{
-		std::cerr << "Can't start Winsock, Err #" << wsResult << std::endl;
-		return;
-	}
-
-	// Create socket
 	sock = socket(AF_INET, SOCK_STREAM, 0);
+
 	if (sock == INVALID_SOCKET)
 	{
 		std::cerr << "Can't create socket, Err #" << WSAGetLastError() << std::endl;
 		WSACleanup();
-		return;
+		return false;
+	}
+
+	u_long iMode = 1;
+	int result = ioctlsocket(sock, FIONBIO, &iMode);
+	if (result != NO_ERROR) {
+		std::cout << "ioctlsocket failed with error: " << result << std::endl;
 	}
 
 	// Fill in a hint structure
+	sockaddr_in hint;
 	hint.sin_family = AF_INET;
 	hint.sin_port = htons(port);
 	inet_pton(AF_INET, ipAddress.c_str(), &hint.sin_addr);
 
-
-}
-
-bool Client::run()
-{
 	// Connect to server
-	connResult = connect(sock, (sockaddr*)&hint, sizeof(hint));
+	int connResult = connect(sock, (sockaddr*)&hint, sizeof(hint));
 	if (connResult == SOCKET_ERROR)
 	{
-		std::cerr << "Can't connect to server, Err #" << WSAGetLastError() << std::endl;
-		closesocket(sock);
-		WSACleanup();
-		return false;
 	}
-	u_long iMode = 1;
-	ioctlsocket(sock, FIONBIO, &iMode);
 	return true;
 }
 
-std::string Client::receive()
+void Client::Send(std::string userInput)
+{
+	if (userInput.size() > 0)		// Make sure the user has typed in something
+	{
+		// Send the text
+		int sendResult = send(sock, userInput.c_str(), userInput.size() + 1, 0);
+	}
+}
+
+vector<std::string> Client::Receive()
 {
 	ZeroMemory(buf, 4096);
 	int bytesReceived = recv(sock, buf, 4096, 0);
+	std::vector<std::string> items;
 	if (bytesReceived > 0)
 	{
-		// Echo response to console
-		if (buf == "Welcome to the Awesome Chat Server Player 1!")
-		{
-			std::cout << "SERVER> " << std::string(buf, 0, bytesReceived) << std::endl;
-		}
-		return buf;
+		items = pu::Split(std::string(buf, 0, bytesReceived), ',');
 	}
-	return "";
-}
-
-void Client::sendMsg(std::string msg)
-{
-	int sendResult = send(sock, msg.c_str(), msg.size() + 1, 0);
+	return items;
 }
 
 void Client::close()
@@ -109,8 +71,26 @@ void Client::close()
 	WSACleanup();
 }
 
-int Client::getSock()
+map<std::string, int> Client::processMessage(std::vector<std::string> items)
 {
-	return sock;
-}
+	int intV;
+	std::string stringV;
+	map<std::string, int>  values;
 
+	if (items.size() != 0) {
+		for (std::string parsed : items) {
+			std::stringstream ss(parsed);
+
+			ss >> stringV;
+			stringV.pop_back();
+
+			if (ss >> intV && stringV != "") {
+				values.insert(std::make_pair(stringV, intV));
+			}
+			else {
+				std::cout << "Error: Unknown value" << std::endl;
+			}
+		}
+	}
+	return values;
+}

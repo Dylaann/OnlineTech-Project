@@ -8,12 +8,12 @@
 /// </summary>
 class MovementSystem {
 public:
-	void addEntity(Entity en);
+	void addEntity(Entity* en);
 	void control(SDL_Keycode in);
 	void update();
 
 private:
-	vector<Entity> m_entityList;
+	vector<Entity*> m_entityList;
 	PositionComponent* p;
 	ControlComponent* c;
 	ChaseComponent* chase;
